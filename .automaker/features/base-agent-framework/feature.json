@@ -1,0 +1,17 @@
+{
+  "id": "base-agent-framework",
+  "category": "Core",
+  "title": "Google ADK Base Agent Class & Shared Tools",
+  "description": "Scaffold Google ADK project structure with base agent class, declared tools library (Firestore readers/writers, file parsers, HTTP callers), and A2A Protocol adapter. Implement exponential backoff and circuit breaker patterns.",
+  "status": "verified",
+  "priority": 1,
+  "complexity": "complex",
+  "dependencies": [
+    "litellm-config-yaml",
+    "firestore-schema-design"
+  ],
+  "createdAt": "2026-03-06T10:48:21.407Z",
+  "updatedAt": "2026-03-06T11:08:57.976Z",
+  "branchName": "master",
+  "startedAt": "2026-03-06T11:03:25.700Z"
+}

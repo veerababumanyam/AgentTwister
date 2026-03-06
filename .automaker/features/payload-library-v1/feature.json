@@ -1,0 +1,16 @@
+{
+  "id": "payload-library-v1",
+  "category": "Core",
+  "title": "Payload Library v1 with 50+ Templates",
+  "description": "Build payload library in Firestore with ≥50 base templates covering 10+ attack vectors from OWASP LLM Top-10. Include metadata for attack type, framework mapping, and effectiveness metrics. Support search and filtering.",
+  "status": "completed",
+  "priority": 1,
+  "complexity": "moderate",
+  "dependencies": [
+    "firestore-schema-design"
+  ],
+  "createdAt": "2026-03-06T10:48:21.408Z",
+  "updatedAt": "2026-03-06T11:07:37.850Z",
+  "branchName": "master",
+  "startedAt": "2026-03-06T10:53:27.150Z"
+}

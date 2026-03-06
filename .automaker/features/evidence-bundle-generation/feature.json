@@ -1,0 +1,17 @@
+{
+  "id": "evidence-bundle-generation",
+  "category": "Core",
+  "title": "Immutable Evidence Bundle Generation with Signatures",
+  "description": "Implement evidence bundle generation with SHA-256 cryptographic signatures, timestamps, and immutability verification. Include all campaign artifacts, payloads, agent logs, and attestations. Support regulatory submission.",
+  "status": "completed",
+  "priority": 1,
+  "complexity": "moderate",
+  "dependencies": [
+    "firestore-schema-design",
+    "scope-attestation-enforcement"
+  ],
+  "createdAt": "2026-03-06T10:48:21.427Z",
+  "updatedAt": "2026-03-06T11:02:11.448Z",
+  "branchName": "master",
+  "startedAt": "2026-03-06T10:53:26.918Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "chat-orchestrator-agent",
+  "category": "Core",
+  "title": "Chat Orchestrator Agent Implementation",
+  "description": "Build Chat Orchestrator agent as the primary entry point. Implement intent classification (≥90% accuracy), clarifying question generation, agent routing, and progress streaming. Integrate A2A communication with all other agents.",
+  "status": "verified",
+  "priority": 1,
+  "complexity": "complex",
+  "dependencies": [
+    "base-agent-framework",
+    "analyst-agent",
+    "planner-agent"
+  ],
+  "createdAt": "2026-03-06T10:48:21.417Z",
+  "updatedAt": "2026-03-06T11:36:48.361Z",
+  "branchName": "master",
+  "startedAt": "2026-03-06T11:27:02.157Z"
+}

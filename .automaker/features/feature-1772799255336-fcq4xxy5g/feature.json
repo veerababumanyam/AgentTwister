@@ -1,0 +1,12 @@
+{
+  "category": "Security",
+  "description": "Add Target Discovery and Reconnaissance Agent that automatically identifies LLM endpoints, analyzes their security posture, and prioritizes attack surfaces based on accessible attack vectors.",
+  "id": "feature-1772799255336-fcq4xxy5g",
+  "steps": [],
+  "status": "backlog",
+  "skipTests": true,
+  "priority": 1,
+  "branchName": "master",
+  "startedAt": "2026-03-06T12:14:17.362Z",
+  "updatedAt": "2026-03-06T12:14:30.999Z"
+}

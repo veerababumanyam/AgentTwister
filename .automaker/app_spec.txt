@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project_specification>
+  <project_name>AgentTwister</project_name>
+
+  <overview>
+    AgentTwister is an agentic AI-powered offensive security research tool purpose-built for ethical red-teaming of LLM-powered applications, AI agents, agentic pipelines, and Retrieval-Augmented Generation (RAG) systems. The platform enables security researchers, red teams, and compliance engineers to systematically discover, reproduce, and document vulnerabilities in AI systems spanning prompt injection, zero-click passive ingestion attacks, memory poisoning, tool misuse, multimodal injection, and more.
+
+The flagship capability is the Adversarial Document Generator: a multi-agent pipeline that analyzes job descriptions and resumes, architects injection payloads, and embeds hidden prompt-injection instructions directly into documents. These injections are rendered invisible to human readers through techniques such as matching text color to background, zero-width Unicode characters, and white-on-white typography, while remaining fully legible to any LLM parsing the document.
+
+The primary entry point is a conversational chat interface—a streaming chat experience where users describe target systems, goals, and constraints in plain language. The AgentTwister orchestration layer interprets intent, asks clarifying questions, routes work to background agents, streams live progress back to chat, and surfaces results as interactive cards directly in the conversation thread.
+
+Built on LiteLLM (unified LLM gateway), Google Agent Development Kit (ADK), and Google Agent-to-Agent (A2A) Protocol, AgentTwister maximizes engineering velocity while enabling independent scaling, deployment, and integration of specialized agents. All campaigns are scoped, consented, and evidence-tracked for authorized security research, penetration testing, and AI Red Team exercises.
+  </overview>
+
+  <technology_stack>
+    <technology>Python 3.9+</technology>
+    <technology>TypeScript / Next.js (React frontend)</technology>
+    <technology>Firebase (Firestore, Authentication, Storage, Cloud Functions/Cloud Run)</technology>
+    <technology>LiteLLM (unified LLM gateway with cost tracking, rate limiting, fallbacks)</technology>
+    <technology>Google Agent Development Kit (ADK) (agent construction framework)</technology>
+    <technology>Google Agent-to-Agent (A2A) Protocol (inter-agent communication)</technology>
+    <technology>OpenAI API (GPT-4o, routed via LiteLLM)</technology>
+    <technology>Anthropic Claude API (Claude 3.x, routed via LiteLLM)</technology>
+    <technology>Google Gemini API (Gemini 2.x, routed via LiteLLM)</technology>
+    <technology>Ollama (local model support)</technology>
+    <technology>python-docx (DOCX document generation and manipulation)</technology>
+    <technology>ReportLab / pdfkit (PDF generation and metadata injection)</technology>
+    <technology>FastAPI (API server for ADK agents on Cloud Run)</technology>
+    <technology>WebSocket / Server-Sent Events (SSE) (real-time streaming)</technology>
+    <technology>Vercel AI SDK / ai npm package (chat streaming on frontend)</technology>
+    <technology>Framer Motion (UI animations)</technology>
+    <technology>React Markdown with rehype-highlight (markdown rendering)</technology>
+    <technology>GCP Cloud Run (containerized agent deployment)</technology>
+    <technology>GCP Cloud Functions (serverless pipeline orchestration)</technology>
+    <technology>Docker (containerization for LiteLLM gateway and agents)</technology>
+    <technology>Git / GitHub (version control)</technology>
+    <technology>pytest (Python testing framework)</technology>
+    <technology>Jest (JavaScript/TypeScript testing)</technology>
+    <technology>SAST tools (code scanning - to be integrated)</technology>
+    <technology>Vercel (frontend hosting, optional)</technology>
+  </technology_stack>
+
+  <core_capabilities>
+    <capability>Multi-agent pipeline orchestration with 7 specialized agents (Chat Orchestrator, Analyst, Planner, Architect, Payload Engineer, Reviewer, Formatter)</capability>
+    <capability>Unified LLM gateway via LiteLLM supporting 100+ model providers with cost tracking and rate limiting</capability>
+    <capability>Standardized inter-agent communication via Google A2A Protocol enabling independent deployment and scaling</capability>
+    <capability>Comprehensive payload generation engine with 50+ base templates covering 21+ attack vectors from OWASP LLM Top-10 and OWASP ASI</capability>
+    <capability>Adversarial document generator producing DOCX and PDF files with human-invisible prompt injection payloads</capability>
+    <capability>Stealth encoding techniques: font color matching, zero-width Unicode, white-on-white text, metadata injection, microprint, and homoglyph substitution</capability>
+    <capability>Interactive conversational chat interface as the primary UX for running red-team campaigns</capability>
+    <capability>Real-time agent status streaming and progress indicators within chat</capability>
+    <capability>Rich result cards for attack plans, documents, probe results, and evidence bundles rendered inline in chat</capability>
+    <capability>Campaign management with persistent state, attestation, and audit trails</capability>
+    <capability>Immutable evidence bundle generation with cryptographic signatures (SHA-256)</capability>
+    <capability>Automatic framework mapping to OWASP LLM Top-10, OWASP ASI, MITRE ATLAS, and NIST AI RMF</capability>
+    <capability>Dual-view document preview showing human-visible and LLM-parsed text</capability>
+    <capability>Live agent endpoint probing with configurable attack sequences</capability>
+    <capability>Benchmark harness compatible with ARTEMIS and RapidPen</capability>
+    <capability>Role-based access control (RBAC) with Viewer, Researcher, and Admin roles</capability>
+    <capability>Scope attestation enforcement for authorization verification</capability>
+    <capability>Multi-turn conversation support with persistent session history and replay</capability>
+    <capability>File drag-and-drop support within chat for context documents</capability>
+    <capability>Mobile-responsive chat interface with accessibility (WCAG 2.1 AA)</capability>
+    <capability>Integration with Google ADK for agent memory, tool binding, and multi-agent coordination</capability>
+  </core_capabilities>
+
+  <implemented_features>
+    <feature>
+      <name>Project Infrastructure Foundation</name>
+      <description>Git repository initialized with .automaker configuration files for project specification tracking. Foundation for CI/CD pipeline, Firebase integration, and deployment automation.</description>
+      <file_locations>
+        <location>./.git/</location>
+        <location>./.automaker/app_spec.txt</location>
+        <location>./.automaker/categories.json</location>
+      </file_locations>
+    </feature>
+  </implemented_features>
+
+  <additional_requirements>
+    <requirement>**Authorization &amp; Compliance:** All campaigns require explicit scope attestation confirming target system name, authorization type (owner / written consent / bug bounty program), and engagement scope. Destructive payloads (RCE, denial-of-wallet) require secondary confirmation. Accounts must enforce MFA. Platform includes Terms of Service requiring lawful, authorized use; accounts violating ToS are suspended automatically.</requirement>
+    <requirement>**Infrastructure Requirements:** GCP project with Firestore, Cloud Run, Cloud Storage, Cloud Functions, and authentication enabled. Self-hosted LiteLLM proxy on Cloud Run (min 2 instances with health checks). Containerized agent deployment via Docker and Cloud Run. Persistent Firebase authentication with RBAC.</requirement>
+    <requirement>**API Keys &amp; Secrets:** Users provide API keys for OpenAI, Anthropic, Google, or Ollama; keys are stored as user-scoped secrets in Firestore, never exposed to frontend, never logged. LiteLLM gateway handles all provider-specific authentication.</requirement>
+    <requirement>**Performance SLAs:** End-to-end adversarial document generation ≤45 seconds. Chat message latency ≤500 ms to first token. Dashboard updates ≤3 seconds via Firestore listeners. Payload library search ≤500 ms for 10K templates. Chat should support ≥200 messages without performance degradation.</requirement>
+    <requirement>**Security &amp; Privacy:** All uploaded documents encrypted at rest (AES-256) and in transit (TLS 1.3); retention ≤30 days without opt-in. Evidence bundles cryptographically signed (SHA-256). Firestore security rules enforce user-scoped access. SAST and dependency scanning in CI. 99.5% monthly uptime target. Automatic retry with exponential backoff for failures.</requirement>
+    <requirement>**Data Model:** Firestore collections: campaigns (with metadata, attestation, payloads, agent logs, evidence bundle), chatSessions (with campaign reference, messages, intent history), users (profile, API keys), payloadLibrary (templates with framework mappings and user feedback). All writes use transactions.</requirement>
+    <requirement>**Accessibility &amp; Responsiveness:** Chat interface responsive for desktop (≥1024 px) and tablet (≥768 px). WCAG 2.1 AA accessibility compliance including keyboard navigation, screen reader support, and color contrast. File uploads via drag-and-drop within chat (≤5 sec for ≤10 MB files).</requirement>
+    <requirement>**Testing &amp; Quality:** Target ≥80% unit test coverage for agent logic. Integration tests for multi-agent workflows. Jest for frontend testing, pytest for backend. Chat intent classification accuracy ≥90%. Stealth pass rate ≥95% (human visual inspection). 100% OWASP LLM Top-10 framework coverage.</requirement>
+    <requirement>**Evidence &amp; Audit:** All agent invocations logged to Firestore (input, output, token usage, duration). Campaign state persisted in real time. Immutable evidence bundles with SHA-256 signatures and timestamps. Campaign replay capability for reproducibility. Signed attestation for regulatory submission.</requirement>
+  </additional_requirements>
+
+  <development_guidelines>
+    <guideline>All LLM calls must be routed through the LiteLLM gateway using declarative model aliases defined in litellm_config.yaml—no direct SDK calls in agent code</guideline>
+    <guideline>Each agent must be implemented as a Google ADK Agent with declared tools, memory scope, and output schema</guideline>
+    <guideline>Inter-agent communication must use the Google A2A Protocol with structured task messages (JSON) for traceability</guideline>
+    <guideline>All agents must implement exponential backoff and circuit breakers for resilience; hard token budgets must be enforced per agent</guideline>
+    <guideline>Chat messages and agent responses must use token-level streaming for sub-500ms time-to-first-token</guideline>
+    <guideline>All user-uploaded documents must be encrypted at rest (AES-256) and in transit (TLS 1.3); documents not retained beyond 30 days without explicit opt-in</guideline>
+    <guideline>Evidence bundles must be cryptographically signed (SHA-256 hash + timestamp) for immutability</guideline>
+    <guideline>All Firestore writes must use transactions to ensure campaign state consistency</guideline>
+    <guideline>RBAC enforcement: destructive payloads (RCE, denial-of-wallet, data deletion) require secondary confirmation and elevated audit logging</guideline>
+    <guideline>Chat interface must achieve ≥90% intent classification accuracy on representative researcher prompts</guideline>
+    <guideline>All generated documents must pass visual human inspection in ≥95% of tester reviews (stealth requirement)</guideline>
+    <guideline>Code must pass SAST scanning and dependency vulnerability checks in CI pipeline</guideline>
+    <guideline>Unit test coverage should target ≥80% for critical agent logic; integration tests for multi-agent workflows</guideline>
+    <guideline>API design: all endpoints must be idempotent; implement strong idempotency keys for payment and state-changing operations</guideline>
+    <guideline>Logging: all agent invocations must be logged to Firestore with input, output, token usage, and duration for evidence and billing</guideline>
+    <guideline>Error handling: user-facing errors should be actionable with troubleshooting guidance; technical errors should be logged with full context</guideline>
+    <guideline>Payload library contributions require code review and provenance tracking</guideline>
+    <guideline>Model hot-swap and A/B testing must be testable without code deployment (via litellm_config.yaml only)</guideline>
+    <guideline>All public APIs must include rate limiting headers and quota enforcement</guideline>
+    <guideline>Security: MFA required for all accounts; production API keys must never appear in logs, error messages, or evidence bundles</guideline>
+  </development_guidelines>
+
+  <implementation_roadmap>
+    <phase>
+      <name>Phase 1 — Foundation (Months 1–2)</name>
+      <status>pending</status>
+      <description>Firebase / GCP project setup with authentication (MFA required), Firestore schema design including chatSessions collection. Deploy LiteLLM gateway on Cloud Run with model aliases for all 7 agents and cost dashboard. Scaffold Google ADK project structure with base agent class, shared tool library (Firestore readers/writers, file parsers, HTTP callers), and streaming adapter. Implement basic multi-agent pipeline (Analyst + Planner + Payload Engineer) communicating via A2A Protocol. Build payload library v1 with ≥50 templates across 10 use cases. Develop adversarial document generator with DOCX output and zero-width character injection. Create chat interface v0.1 with basic streaming thread, file upload, and Chat Orchestrator intent classification. Implement scope attestation as inline chat confirmation with ToS enforcement. Expected dev-time saving: ~40% reduction from LiteLLM + ADK bootstrapping vs. custom integration.</description>
+    </phase>
+    <phase>
+      <name>Phase 2 — Core Product (Months 3–4)</name>
+      <status>pending</status>
+      <description>Complete all 7 agent roles as Google ADK agents with full A2A compliance. Implement LiteLLM virtual keys per user, routing requests without exposing provider credentials to frontend. Build PDF generation with dual-view document preview (human-visible vs. LLM-parsed). Generate full payload manifests and evidence bundles with cryptographic signatures. Implement automatic OWASP + MITRE ATLAS framework mapping. Launch chat interface v1.0 with attack plan cards, document result cards, probe result cards, live agent status rail, and collapsible agent thought cards. Add campaign history sidebar with search. Build campaign dashboard with real-time Firestore updates. Implement RBAC (Viewer / Researcher / Admin roles).</description>
+    </phase>
+    <phase>
+      <name>Phase 3 — Advanced Capabilities (Months 5–6)</name>
+      <status>pending</status>
+      <description>Implement live agent endpoint probing with per-campaign confirmation (surfaced in chat). Build multi-turn escalation attack sequencing (UC-12). Create benchmark harness compatible with ARTEMIS, using LiteLLM parallel model routing for multi-model runs. Expand payload library to ≥100 templates covering UC-1 through UC-22. Add PDF metadata and DOCX custom-properties injection techniques. Launch chat interface v1.5 with thumbs-up/down feedback, read-only share links, and Markdown/PDF chat export. Enable chat-initiated compliance mapping. Support third-party A2A agent integration (external vulnerability scanner, compliance mapper) without pipeline code changes.</description>
+    </phase>
+    <phase>
+      <name>Phase 4 — Enterprise &amp; Compliance (Months 7–9)</name>
+      <status>pending</status>
+      <description>Create ISO/IEC 42001 and EU AI Act compliance report templates. Integrate SSO / enterprise IdP. Build API for CI/CD integration (run red-team campaigns in pipeline). Add MCP/plugin shadowing test module (UC-14). Achieve RapidPen benchmark harness compatibility.</description>
+    </phase>
+    <phase>
+      <name>Phase 5 — Research &amp; Community (Months 10–12)</name>
+      <status>pending</status>
+      <description>Launch public payload library with contribution and review workflow. Export anonymized academic dataset. Implement vector DB adversarial embedding test module (UC-15). Add multimodal injection with image steganography (UC-17).</description>
+    </phase>
+  </implementation_roadmap>
+</project_specification>

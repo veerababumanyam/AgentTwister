@@ -1,0 +1,17 @@
+{
+  "id": "analyst-agent",
+  "category": "Core",
+  "title": "Analyst Agent Implementation",
+  "description": "Build Analyst agent as Google ADK Agent to parse job descriptions and resumes, identify key details, and produce structured analysis. Integrate with LiteLLM for model calls. Implement memory scope and A2A Protocol compliance.",
+  "status": "verified",
+  "priority": 1,
+  "complexity": "moderate",
+  "dependencies": [
+    "base-agent-framework",
+    "payload-library-v1"
+  ],
+  "createdAt": "2026-03-06T10:48:21.409Z",
+  "updatedAt": "2026-03-06T11:17:41.206Z",
+  "branchName": "master",
+  "startedAt": "2026-03-06T11:08:59.150Z"
+}

@@ -1,0 +1,527 @@
+# LiteLLM Configuration for AgentTwister
+# Declarative model aliases for all supported providers with cost tracking,
+# rate limiting, and fallback chains.
+#
+# Usage: litellm --config litellm_config.yaml
+# Or in Python: from litellm import completion; completion(model_alias, messages)
+
+model_list:
+  # ============================================================
+  # OPENAI MODELS
+  # ============================================================
+  - model_name: gpt-4o-primary
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000  # Rate limit: requests per minute
+      tpm_limit: 2000000  # Rate limit: tokens per minute
+      max_tokens: 128000
+      timeout: 120
+      cost_per_message:
+        input: 2.50e-06  # $2.50 per 1M input tokens
+        output: 10.00e-06  # $10.00 per 1M output tokens
+      tags:
+        - primary
+        - production
+        - multimodal
+    fallbacks:
+      - gpt-4o-fallback
+      - claude-3-5-sonnet-fallback
+
+  - model_name: gpt-4o-fallback
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 120
+      cost_per_message:
+        input: 2.50e-06
+        output: 10.00e-06
+      tags:
+        - fallback
+        - production
+      num_retries: 3
+      retry_policy: exponential_backoff
+
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 60
+      cost_per_message:
+        input: 0.15e-06  # $0.15 per 1M input tokens
+        output: 0.60e-06  # $0.60 per 1M output tokens
+      tags:
+        - cost-optimized
+        - fast
+
+  - model_name: o1-preview
+    litellm_params:
+      model: openai/o1-preview
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 100
+      max_tokens: 128000
+      timeout: 300
+      cost_per_message:
+        input: 15.00e-06  # $15 per 1M input tokens
+        output: 60.00e-06  # $60 per 1M output tokens
+      tags:
+        - reasoning
+        - premium
+
+  - model_name: o1-mini
+    litellm_params:
+      model: openai/o1-mini
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 400
+      max_tokens: 128000
+      timeout: 180
+      cost_per_message:
+        input: 3.00e-06  # $3 per 1M input tokens
+        output: 12.00e-06  # $12 per 1M output tokens
+      tags:
+        - reasoning
+        - cost-optimized
+
+  # ============================================================
+  # ANTHROPIC CLAUDE MODELS
+  # ============================================================
+  - model_name: claude-3-5-sonnet-primary
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 120
+      cost_per_message:
+        input: 3.00e-06  # $3 per 1M input tokens
+        output: 15.00e-06  # $15 per 1M output tokens
+      tags:
+        - primary
+        - production
+        - long-context
+    fallbacks:
+      - claude-3-5-sonnet-fallback
+      - gpt-4o-fallback
+
+  - model_name: claude-3-5-sonnet-fallback
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 120
+      cost_per_message:
+        input: 3.00e-06
+        output: 15.00e-06
+      tags:
+        - fallback
+        - production
+      num_retries: 3
+      retry_policy: exponential_backoff
+
+  - model_name: claude-3-5-haiku
+    litellm_params:
+      model: anthropic/claude-3-5-haiku-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 60
+      cost_per_message:
+        input: 1.00e-06  # $1 per 1M input tokens
+        output: 5.00e-06  # $5 per 1M output tokens
+      tags:
+        - cost-optimized
+        - fast
+
+  - model_name: claude-3-opus
+    litellm_params:
+      model: anthropic/claude-3-opus-20240229
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 4000
+      tpm_limit: 80000
+      max_tokens: 200000
+      timeout: 180
+      cost_per_message:
+        input: 15.00e-06  # $15 per 1M input tokens
+        output: 75.00e-06  # $75 per 1M output tokens
+      tags:
+        - premium
+        - high-quality
+
+  # ============================================================
+  # GOOGLE GEMINI MODELS
+  # ============================================================
+  - model_name: gemini-2-0-flash-primary
+    litellm_params:
+      model: gemini/gemini-2.0-flash-exp
+      api_key: os.environ/GEMINI_API_KEY
+      rpm_limit: 15000
+      tpm_limit: 1000000
+      max_tokens: 1000000
+      timeout: 90
+      cost_per_message:
+        input: 0.075e-06  # ~$0.075 per 1M input tokens
+        output: 0.30e-06  # ~$0.30 per 1M output tokens
+      tags:
+        - primary
+        - production
+        - multimodal
+        - fast
+    fallbacks:
+      - gemini-1-5-pro-fallback
+      - gpt-4o-fallback
+
+  - model_name: gemini-2-0-flash-thinking
+    litellm_params:
+      model: gemini/gemini-2.0-flash-thinking-exp
+      api_key: os.environ/GEMINI_API_KEY
+      rpm_limit: 15000
+      tpm_limit: 1000000
+      max_tokens: 1000000
+      timeout: 180
+      cost_per_message:
+        input: 0.075e-06
+        output: 0.30e-06
+      tags:
+        - reasoning
+        - fast
+
+  - model_name: gemini-1-5-pro-fallback
+    litellm_params:
+      model: gemini/gemini-1.5-pro
+      api_key: os.environ/GEMINI_API_KEY
+      rpm_limit: 15000
+      tpm_limit: 1000000
+      max_tokens: 2000000
+      timeout: 120
+      cost_per_message:
+        input: 1.25e-06  # $1.25 per 1M input tokens
+        output: 5.00e-06  # $5 per 1M output tokens
+      tags:
+        - fallback
+        - long-context
+      num_retries: 3
+
+  - model_name: gemini-1-5-flash
+    litellm_params:
+      model: gemini/gemini-1.5-flash
+      api_key: os.environ/GEMINI_API_KEY
+      rpm_limit: 15000
+      tpm_limit: 1000000
+      max_tokens: 1000000
+      timeout: 60
+      cost_per_message:
+        input: 0.075e-06
+        output: 0.30e-06
+      tags:
+        - cost-optimized
+        - fast
+
+  # ============================================================
+  # OLLAMA LOCAL MODELS
+  # ============================================================
+  - model_name: ollama-llama3-primary
+    litellm_params:
+      model: ollama/llama3
+      api_base: os.environ/OLLAMA_API_BASE  # Default: http://localhost:11434
+      rpm_limit: 60  # Local inference, conservative limits
+      tpm_limit: 100000
+      max_tokens: 8192
+      timeout: 300
+      cost_per_message:
+        input: 0  # Free - local inference
+        output: 0
+      tags:
+        - local
+        - privacy
+        - free
+    fallbacks:
+      - ollama-mistral-fallback
+      - gpt-4o-mini  # Cloud fallback
+
+  - model_name: ollama-mistral-fallback
+    litellm_params:
+      model: ollama/mistral
+      api_base: os.environ/OLLAMA_API_BASE
+      rpm_limit: 60
+      tpm_limit: 100000
+      max_tokens: 8192
+      timeout: 300
+      cost_per_message:
+        input: 0
+        output: 0
+      tags:
+        - local
+        - fallback
+      num_retries: 2
+
+  - model_name: ollama-codellama
+    litellm_params:
+      model: ollama/codellama
+      api_base: os.environ/OLLAMA_API_BASE
+      rpm_limit: 60
+      tpm_limit: 100000
+      max_tokens: 16384
+      timeout: 300
+      cost_per_message:
+        input: 0
+        output: 0
+      tags:
+        - local
+        - code-specialized
+
+  - model_name: ollama-deepseek-coder
+    litellm_params:
+      model: ollama/deepseek-coder
+      api_base: os.environ/OLLAMA_API_BASE
+      rpm_limit: 60
+      tpm_limit: 100000
+      max_tokens: 16384
+      timeout: 300
+      cost_per_message:
+        input: 0
+        output: 0
+      tags:
+        - local
+        - code-security
+        - red-team
+
+  # ============================================================
+  # AGENT-SPECIFIC ALIASES
+  # These aliases map to specific models optimized for each agent role.
+  # Change model assignments here without touching agent code.
+  # ============================================================
+
+  # Chat Orchestrator - Fast, responsive for intent classification
+  - model_name: chat-orchestrator
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 60
+      cost_per_message:
+        input: 0.15e-06
+        output: 0.60e-06
+      tags:
+        - agent:chat-orchestrator
+        - latency-optimized
+    fallbacks:
+      - claude-3-5-haiku
+      - gemini-1-5-flash
+
+  # Analyst Agent - Deep reasoning for vulnerability analysis
+  - model_name: analyst-agent
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 120
+      cost_per_message:
+        input: 3.00e-06
+        output: 15.00e-06
+      tags:
+        - agent:analyst
+        - reasoning-optimized
+    fallbacks:
+      - gpt-4o-primary
+      - gemini-2-0-flash-primary
+
+  # Planner Agent - Strategic planning with long context
+  - model_name: planner-agent
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 120
+      cost_per_message:
+        input: 3.00e-06
+        output: 15.00e-06
+      tags:
+        - agent:planner
+        - long-context
+    fallbacks:
+      - gemini-1-5-pro-fallback
+      - gpt-4o-primary
+
+  # Architect Agent - Technical design and system architecture
+  - model_name: architect-agent
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 120
+      cost_per_message:
+        input: 2.50e-06
+        output: 10.00e-06
+      tags:
+        - agent:architect
+        - multimodal
+    fallbacks:
+      - claude-3-5-sonnet-primary
+      - gemini-2-0-flash-primary
+
+  # Payload Engineer - Prompt injection and attack crafting
+  - model_name: payload-engineer-agent
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 200000
+      timeout: 120
+      cost_per_message:
+        input: 3.00e-06
+        output: 15.00e-06
+      tags:
+        - agent:payload-engineer
+        - red-team
+        - creative
+    fallbacks:
+      - gpt-4o-primary
+      - ollama-deepseek-coder
+
+  # Reviewer Agent - Quality assurance and safety checks
+  - model_name: reviewer-agent
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 120
+      cost_per_message:
+        input: 2.50e-06
+        output: 10.00e-06
+      tags:
+        - agent:reviewer
+        - quality-assurance
+    fallbacks:
+      - claude-3-5-sonnet-primary
+      - gemini-1-5-pro-fallback
+
+  # Formatter Agent - Document generation and formatting
+  - model_name: formatter-agent
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+      rpm_limit: 10000
+      tpm_limit: 2000000
+      max_tokens: 128000
+      timeout: 60
+      cost_per_message:
+        input: 0.15e-06
+        output: 0.60e-06
+      tags:
+        - agent:formatter
+        - cost-optimized
+    fallbacks:
+      - claude-3-5-haiku
+      - gemini-1-5-flash
+
+# ============================================================
+# GENERAL CONFIGURATION
+# ============================================================
+
+# Enable/disable features
+litellm_settings:
+  # Drop parameters for specific providers
+  drop_params: true  # Drop unsupported params silently
+
+  # Set specific timeout for all models
+  set_verbose: false  # Disable verbose logging in production
+
+  # Cache configuration for cost optimization
+  cache:
+    type: "simple"  # Use in-memory cache
+    ttl: 3600  # Cache for 1 hour
+
+  # Security settings
+  security:
+    # Validate API keys before use
+    validate_api_keys: true
+
+  # Monitoring and observability
+  success_callback: ["prometheus"]  # Export metrics for monitoring
+  failure_callback: ["prometheus"]
+
+  # Retry configuration
+  num_retries: 3
+  retry_policy: exponential_backoff
+  retry_wait_min: 1  # Minimum wait between retries (seconds)
+  retry_wait_max: 60  # Maximum wait between retries (seconds)
+
+  # Rate limiting configuration
+  max_budget: 100.0  # Maximum budget in dollars (for cost tracking)
+  budget_refresh_time: 30  # Budget refresh period in days
+  master_key: os.environ/LITELLM_MASTER_KEY  # Master key for virtual key management
+
+  # Fallback configuration
+  fallbacks:
+    - model_list: ["gpt-4o-primary", "claude-3-5-sonnet-primary", "gemini-2-0-flash-primary"]
+      allowed_fails: 3  # Switch after 3 consecutive failures
+      cooldown_time: 60  # Wait 60 seconds before retrying primary
+
+  # Alerting configuration
+  alerting:
+    - type: budget
+      enabled: true
+      threshold: 0.80  # Alert at 80% of budget
+    - type: error_rate
+      enabled: true
+      threshold: 0.10  # Alert at 10% error rate
+      time_window: 300  # Over 5 minutes
+
+# ============================================================
+# ENVIRONMENT VARIABLES REFERENCE
+# ============================================================
+# Required environment variables for this configuration:
+#
+# OpenAI:
+#   OPENAI_API_KEY - Your OpenAI API key
+#
+# Anthropic:
+#   ANTHROPIC_API_KEY - Your Anthropic API key
+#
+# Google:
+#   GEMINI_API_KEY - Your Google Gemini API key
+#
+# Ollama (local):
+#   OLLAMA_API_BASE - Ollama server URL (default: http://localhost:11434)
+#
+# LiteLLM:
+#   LITELLM_MASTER_KEY - Master key for virtual key management (optional)
+#
+# ============================================================
+# USAGE EXAMPLES
+# ============================================================
+#
+# Python API:
+#   from litellm import completion
+#   response = completion(model="analyst-agent", messages=[...])
+#
+# Proxy Server:
+#   litellm --config litellm_config.yaml --port 4000
+#
+# Docker:
+#   docker run -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+#     -p 4000:4000 ghcr.io/berriai/litellm:latest \
+#     --config /app/config.yaml --port 4000
+#
+# ============================================================
