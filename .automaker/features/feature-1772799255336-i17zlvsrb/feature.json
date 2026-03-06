@@ -1,9 +1,0 @@
-{
-  "category": "Advanced Testing",
-  "description": "Add Multi-Turn Attack Choreography Designer that allows researchers to create complex, multi-stage attack scenarios with state persistence and context-aware payload selection.",
-  "id": "feature-1772799255336-i17zlvsrb",
-  "steps": [],
-  "status": "backlog",
-  "skipTests": true,
-  "priority": 3
-}

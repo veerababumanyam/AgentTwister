@@ -1,9 +1,0 @@
-{
-  "category": "Enterprise",
-  "description": "Implement Compliance Automation Suite with automatic report generation for regulatory frameworks (ISO 27001, SOC 2, NIST AI RMF) and evidence chain validation for audit purposes.",
-  "id": "feature-1772799255336-ype2tbes0",
-  "steps": [],
-  "status": "backlog",
-  "skipTests": true,
-  "priority": 2
-}
